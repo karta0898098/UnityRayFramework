@@ -49,7 +49,9 @@ namespace UnityRayFramework.Runtime
 
         public void ReleaseUI(object ui)
         {
-            Destroy(ui as UnityEngine.Object);
+            var castUI = ui as UIControllerBase;
+            Debug.LogFormat(" Release UI: {0}", castUI.name);
+            Destroy(castUI.gameObject);
         }
     }
 }
