@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -8,7 +7,7 @@ namespace UnityRayFramework.Runtime
 {
     public class ResourceAssetTask
     {
-        public IEnumerator AsyncLoadAsset<T>(string assetPath, Action<T> OnSuccess) 
+        public IEnumerator AsyncLoadAsset<T>(string assetPath, Action<T> OnSuccess) where T : class
         {
             var loader = Resources.LoadAsync(assetPath);
             while (!loader.isDone)
@@ -18,8 +17,7 @@ namespace UnityRayFramework.Runtime
 
             if (loader.asset != null)
             {
-                var value = (T)Convert.ChangeType(loader.asset, typeof(T));
-                OnSuccess?.Invoke(value);
+                OnSuccess?.Invoke(loader.asset as T);
             }
         }
     }

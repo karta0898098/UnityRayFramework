@@ -4,7 +4,7 @@ using RayFramework.Resource;
 
 namespace UnityRayFramework.Runtime
 {
-    public sealed class ResoureComponent:RayFrameworkComponent
+    public sealed class ResoureComponent : RayFrameworkComponent
     {
         private IResource m_Resource = null;
 
@@ -17,7 +17,7 @@ namespace UnityRayFramework.Runtime
             m_Resource.SetHelper(resourceHelper);
         }
 
-        public void LoadAsset<T>(string asset, Action<T> OnSuccess)
+        public void LoadAsset<T>(string asset, Action<T> OnSuccess) where T : class
         {
             m_Resource.LoadAsset(asset, OnSuccess);
         }

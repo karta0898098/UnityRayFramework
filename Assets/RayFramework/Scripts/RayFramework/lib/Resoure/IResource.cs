@@ -7,6 +7,6 @@ namespace RayFramework.Resource
     public interface IResource
     {
         void SetHelper(IResourceHelper resourceHelper);
-        void LoadAsset<T>(string asset, Action<T> OnSuccess);
+        void LoadAsset<T>(string asset, Action<T> OnSuccess) where T : class;
     }
 }

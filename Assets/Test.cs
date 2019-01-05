@@ -19,7 +19,12 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            UI.Show<string>("Test");
+            UI.Show<UITestController>("Canvas", (ui) => { ui.Call(); });
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            UI.Close("Canvas");
         }
     }
 }

@@ -1,30 +1,55 @@
 ﻿using System;
-using System.Collections.Generic;
+using RayFramework;
 using RayFramework.UI;
+using RayFramework.Resource;
 using UnityEngine;
 
 namespace UnityRayFramework.Runtime
 {
-    public class UIInstanceHelper :MonoBehaviour, IUIInstanceHelper
+    public class UIInstanceHelper : MonoBehaviour, IUIInstanceHelper
     {
-        public void ClearCache()
-        {
+        private IResource m_Resource;
 
+        public Transform InstanceRoot;
+
+        public void Start()
+        {
+            m_Resource = GameFrameworkEntry.GetModule<IResource>();
         }
 
-        public void Close(string uiName)
-        {
 
+        public void ResouceLoadUI<T>(string uiName, Action<T> OnSuccess) where T : class
+        {
+            m_Resource.LoadAsset<GameObject>(uiName, (asset) =>
+            {
+                var go = Instantiate(asset, InstanceRoot);
+                var ui = go.GetComponent<UIControllerBase>();
+                ui.name = uiName;
+                ui.LastUseTime = DateTime.Now;
+                ui.transform.SetParent(InstanceRoot);
+                OnSuccess?.Invoke(ui as T);
+            });
         }
 
-        public void ResouceLoadUI<T>(string uiName, Action<T> OnSuccess)
+        public void ActiveUI(object ui)
         {
-            Debug.Log(uiName);
+            var castUI = ui as UIControllerBase;
+            castUI.LastUseTime = DateTime.Now;
+            castUI.gameObject.SetActive(true);
+            castUI.transform.SetParent(InstanceRoot);
+            Debug.LogFormat("Show UI: {0}", castUI.name);
         }
 
-        public void Show<T>(string uiName, Action<T> OnSuccess = null)
+        public void CloseUI(object ui)
         {
-            Debug.Log(uiName);
+            var castUI = ui as UIControllerBase;
+            castUI.gameObject.SetActive(false);
+            Debug.LogFormat("Close UI: {0}", castUI.name);
+        }
+
+        public void ReleaseUI(object ui)
+        {
+            Destroy(ui as UnityEngine.Object);
         }
     }
 }

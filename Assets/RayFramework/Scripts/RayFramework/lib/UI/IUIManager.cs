@@ -8,11 +8,13 @@ namespace RayFramework.UI
     {
         void SetHelper(IUIInstanceHelper helper);
 
-        void Show<T>(string uiName, Action<T> OnSuccess = null);
+        void SetClearInterval(float interval);
+
+        void SetReleaeInterval(float interval);
+
+        void Show<T>(string uiName, Action<T> OnSuccess = null) where T : class;
 
         void Close(string uiName);
-
-        void ResouceLoadUI<T>(string uiName, Action<T> OnSuccess);
 
         void ClearCache();
     }

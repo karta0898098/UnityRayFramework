@@ -1,36 +1,104 @@
 ﻿using System;
 using System.Collections.Generic;
-using RayFramework.Resource;
 
 namespace RayFramework.UI
 {
     internal sealed class UIManager : RayCoreModule, IUIManager
     {
+        private float m_ReleaseInterval = 60;
+        private float m_IntervalTimer;
+        private float m_ClearInterval;
 
         private IUIInstanceHelper m_InstanceHelper;
+        internal Dictionary<string, IUIController> m_Actives;
+        internal Dictionary<string, IUIController> m_ObjectPool;
+
+        public UIManager()
+        {
+            m_Actives = new Dictionary<string, IUIController>();
+            m_ObjectPool = new Dictionary<string, IUIController>();
+        }
 
         public void SetHelper(IUIInstanceHelper helper)
         {
             m_InstanceHelper = helper;
         }
+
+        public void SetClearInterval(float interval)
+        {
+            m_ClearInterval = interval;
+        }
+
+        public void SetReleaeInterval(float interval)
+        {
+            m_ReleaseInterval = interval;
+        }
+
         public void ClearCache()
         {
-            m_InstanceHelper.ClearCache();
+            var ReleaseQueue = new List<IUIController>();
+            var ReleaseKey = new List<string>();
+            foreach (var item in m_ObjectPool)
+            {
+                var intervalTime = DateTime.Now - item.Value.LastUseTime;
+                if (intervalTime.TotalSeconds >= m_ReleaseInterval && !item.Value.NeverRelease)
+                {
+                    ReleaseKey.Add(item.Key);
+                    ReleaseQueue.Add(item.Value);
+                }
+            }
+
+            for (int i = 0; i < ReleaseKey.Count; i++)
+            {
+                m_ObjectPool.Remove(ReleaseKey[i]);
+                m_InstanceHelper.ReleaseUI(ReleaseQueue[i]);
+            }
+
+            ReleaseQueue.Clear();
+            ReleaseKey.Clear();
         }
 
         public void Close(string uiName)
         {
-            m_InstanceHelper.Close(uiName);
+            if (m_Actives.ContainsKey(uiName))
+            {
+                var ui = m_Actives[uiName];
+                ui.Dispose(() =>
+                {
+                    m_Actives.Remove(uiName);
+                    m_ObjectPool.Add(uiName, ui);
+                    m_InstanceHelper.CloseUI(ui);
+                });
+            }
         }
 
-        public void ResouceLoadUI<T>(string uiName, Action<T> OnSuccess) 
+        public void Show<T>(string uiName, Action<T> OnSuccess = null) where T : class
         {
-            m_InstanceHelper.ResouceLoadUI(uiName, OnSuccess);
-        }
+            if (m_Actives.ContainsKey(uiName))
+            {
+                if (!m_Actives[uiName].AllowMulitActive)
+                {
+                    return;
+                }
+            }
 
-        public void Show<T>(string uiName, Action<T> OnSuccess = null)
-        {
-            m_InstanceHelper.Show(uiName, OnSuccess);
+            if (m_ObjectPool.ContainsKey(uiName))
+            {
+                var ui = m_ObjectPool[uiName];
+                m_ObjectPool.Remove(uiName);
+                m_Actives.Add(uiName, ui);
+                m_InstanceHelper.ActiveUI(ui);
+                OnSuccess?.Invoke(ui as T);
+            }
+            else
+            {
+                m_InstanceHelper.ResouceLoadUI<T>(uiName, (ui) =>
+                {
+                    var castUI = ui as IUIController;
+                    m_Actives.Add(uiName, castUI);
+                    OnSuccess?.Invoke(ui as T);
+                });
+            }
         }
 
         internal override void Shoudown()
@@ -40,7 +108,15 @@ namespace RayFramework.UI
 
         internal override void Update(float timeTick, float realTimeTick)
         {
-
+            if (m_IntervalTimer < m_ClearInterval)
+            {
+                m_IntervalTimer += timeTick;
+            }
+            else
+            {
+                m_IntervalTimer = 0;
+                ClearCache();
+            }
         }
     }
 }

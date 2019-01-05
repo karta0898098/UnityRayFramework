@@ -18,6 +18,6 @@ namespace UnityRayFramework.Runtime
 
         public abstract IUIController Init();
 
-        public abstract IUIController Dispose(System.Action OnAnimComplete);
+        public abstract IUIController Dispose(Action OnAnimComplete);
     }
 }

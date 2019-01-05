@@ -13,9 +13,9 @@ namespace RayFramework.Resource
             this.resourceHelper = resourceHelper;
         }
 
-        public void LoadAsset<T>(string asset, Action<T> OnSuccess)
+        public void LoadAsset<T>(string asset, Action<T> OnSuccess) where T : class
         {
-            resourceHelper.LoadAsset(asset,OnSuccess);
+            resourceHelper.LoadAsset(asset, OnSuccess);
         }
 
         internal override void Update(float timeTick, float realTimeTick)

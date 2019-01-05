@@ -1,18 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 
 
 namespace RayFramework.UI
 {
     public interface IUIInstanceHelper
     {
+        void ResouceLoadUI<T>(string uiName, Action<T> OnSuccess) where T : class;
 
-        void Show<T>(string uiName, Action<T> OnSuccess = null);
+        void CloseUI(object ui);
 
-        void Close(string uiName);
+        void ActiveUI(object ui);
 
-        void ClearCache();
-
-        void  ResouceLoadUI<T>(string uiName, Action<T> OnSuccess);
+        void ReleaseUI(object ui);
     }
 }
