@@ -10,7 +10,7 @@ namespace UnityRayFramework.Runtime
     {
         private IResource m_Resource;
 
-        public Transform InstanceRoot;
+        public RectTransform InstanceRoot;
 
         public void Start()
         {
@@ -24,9 +24,9 @@ namespace UnityRayFramework.Runtime
             {
                 var go = Instantiate(asset, InstanceRoot);
                 var ui = go.GetComponent<UIControllerBase>();
+                var rect = go.GetComponent<RectTransform>();
                 ui.name = uiName;
                 ui.LastUseTime = DateTime.Now;
-                ui.transform.SetParent(InstanceRoot);
                 OnSuccess?.Invoke(ui as T);
             });
         }
