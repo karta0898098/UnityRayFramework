@@ -4,7 +4,7 @@ using RayFramework.Resource;
 
 namespace UnityRayFramework.Runtime
 {
-    public sealed class ResoureComponent : RayFrameworkComponent
+    public sealed class ResourceComponent : RayFrameworkComponent
     {
         private IResource m_Resource = null;
 
