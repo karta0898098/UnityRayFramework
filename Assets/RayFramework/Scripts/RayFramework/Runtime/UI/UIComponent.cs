@@ -31,11 +31,6 @@ namespace UnityRayFramework.Runtime
             m_UIManager.Show(uiName, OnSuccess);
         }
 
-        public void Show(string uiName, Action<GameObject> OnSuccess = null)
-        {
-            m_UIManager.Show(uiName, OnSuccess);
-        }
-
         public void Close(string uiName)
         {
             m_UIManager.Close(uiName);
