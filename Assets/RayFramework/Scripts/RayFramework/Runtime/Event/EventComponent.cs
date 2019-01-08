@@ -17,7 +17,7 @@ namespace UnityRayFramework.Runtime
         {
             base.Awake();
 
-            m_EventManager = GameFrameworkEntry.GetModule<IEventManager>();
+            m_EventManager = RayFramework.RayFrameworkEntry.GetModule<IEventManager>();
             if (m_EventManager == null)
             {
                 Debug.LogError("Event manager is invalid.");

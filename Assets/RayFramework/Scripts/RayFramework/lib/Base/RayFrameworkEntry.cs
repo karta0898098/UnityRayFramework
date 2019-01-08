@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace RayFramework
 {
-    public static class GameFrameworkEntry
+    public static class RayFrameworkEntry
     {
         private static readonly LinkedList<RayCoreModule> m_GameFrameworkModules = new LinkedList<RayCoreModule>();
 
@@ -43,14 +43,14 @@ namespace RayFramework
             var interfaceType = typeof(T);
             if (!interfaceType.IsInterface)
             {
-                throw new GameFrameworkException(string.Format("You must get module by interface, but '{0}' is not.", interfaceType.FullName));
+                throw new RayFrameworkException(string.Format("You must get module by interface, but '{0}' is not.", interfaceType.FullName));
             }
 
             var moduleName = string.Format("{0}.{1}", interfaceType.Namespace, interfaceType.Name.Substring(1));
             var moduleType = Type.GetType(moduleName);
             if (moduleType == null)
             {
-                throw new GameFrameworkException(string.Format("Can not find Game Framework module type '{0}'.", moduleName));
+                throw new RayFrameworkException(string.Format("Can not find Game Framework module type '{0}'.", moduleName));
             }
 
             return GetModule(moduleType) as T;
@@ -84,7 +84,7 @@ namespace RayFramework
 
             if (module == null)
             {
-                throw new GameFrameworkException(string.Format("Can not create module '{0}'.", moduleType.Name));
+                throw new RayFrameworkException(string.Format("Can not create module '{0}'.", moduleType.Name));
             }
 
             var current = m_GameFrameworkModules.First;

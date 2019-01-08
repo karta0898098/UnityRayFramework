@@ -38,12 +38,12 @@ namespace UnityRayFramework.Runtime
 
         private void Update()
         {
-            GameFrameworkEntry.Update(Time.deltaTime, Time.realtimeSinceStartup);
+            RayFramework.RayFrameworkEntry.Update(Time.deltaTime, Time.realtimeSinceStartup);
         }
 
         private void OnDestroy()
         {
-            GameFrameworkEntry.Shutdown();
+            RayFramework.RayFrameworkEntry.Shutdown();
         }
 
         internal void Shutdown()

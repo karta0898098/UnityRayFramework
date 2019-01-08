@@ -62,7 +62,7 @@ namespace RayFramework
         {
             if (handler == null)
             {
-                throw new GameFrameworkException("Event handler is invalid.");
+                throw new RayFrameworkException("Event handler is invalid.");
             }
 
             if (!m_EventHandlers.TryGetValue(id, out LinkedList<EventHandler<T>> handlers))
@@ -77,7 +77,7 @@ namespace RayFramework
         {
             if (handler == null)
             {
-                throw new GameFrameworkException("Event handler is invalid.");
+                throw new RayFrameworkException("Event handler is invalid.");
             }
 
             if (!m_EventHandlers.TryGetValue(id, out LinkedList<EventHandler<T>> handlers))
@@ -88,11 +88,11 @@ namespace RayFramework
             }
             else if ((m_EventPoolMode & EventPoolMode.AllowMultiHandler) == 0)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow multi handler.", id.ToString()));
+                throw new RayFrameworkException(string.Format("Event '{0}' not allow multi handler.", id.ToString()));
             }
             else if ((m_EventPoolMode & EventPoolMode.AllowDuplicateHandler) == 0 && Check(id, handler))
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow duplicate handler.", id.ToString()));
+                throw new RayFrameworkException(string.Format("Event '{0}' not allow duplicate handler.", id.ToString()));
             }
             else
             {
@@ -104,17 +104,17 @@ namespace RayFramework
         {
             if (handler == null)
             {
-                throw new GameFrameworkException("Event handler is invalid.");
+                throw new RayFrameworkException("Event handler is invalid.");
             }
 
             if (!m_EventHandlers.TryGetValue(id, out LinkedList<EventHandler<T>> handlers))
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not exists any handler.", id.ToString()));
+                throw new RayFrameworkException(string.Format("Event '{0}' not exists any handler.", id.ToString()));
             }
 
             if (!handlers.Remove(handler))
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not exists specified handler.", id.ToString()));
+                throw new RayFrameworkException(string.Format("Event '{0}' not exists specified handler.", id.ToString()));
             }
         }
 
@@ -162,7 +162,7 @@ namespace RayFramework
 
             if (noHarndlerException)
             {
-                throw new GameFrameworkException(string.Format("Event '{0}' not allow no handler.", eventId.ToString()));
+                throw new RayFrameworkException(string.Format("Event '{0}' not allow no handler.", eventId.ToString()));
             }
         }
     }

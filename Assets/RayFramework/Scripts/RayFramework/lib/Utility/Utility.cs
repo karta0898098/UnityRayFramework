@@ -34,7 +34,7 @@ namespace RayFramework
             {
                 if (results == null)
                 {
-                    throw new GameFrameworkException("Results is invalid");
+                    throw new RayFrameworkException("Results is invalid");
                 }
 
                 results.Clear();

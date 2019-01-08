@@ -13,7 +13,7 @@ namespace UnityRayFramework.Runtime
             base.Awake();
 
             var resourceHelper = GetComponent<IResourceHelper>();
-            m_Resource = GameFrameworkEntry.GetModule<IResource>();
+            m_Resource = RayFramework.RayFrameworkEntry.GetModule<IResource>();
             m_Resource.SetHelper(resourceHelper);
         }
 

@@ -20,13 +20,18 @@ namespace UnityRayFramework.Runtime
             base.Awake();
 
             var UIInstanceHelper = GetComponent<IUIInstanceHelper>();
-            m_UIManager = GameFrameworkEntry.GetModule<IUIManager>();
+            m_UIManager = RayFramework.RayFrameworkEntry.GetModule<IUIManager>();
             m_UIManager.SetHelper(UIInstanceHelper);
             m_UIManager.SetReleaeInterval(ReleaseInterval);
             m_UIManager.SetClearInterval(ClearCacheInterval);
         }
 
         public void Show<T>(string uiName, Action<T> OnSuccess = null) where T : UIControllerBase
+        {
+            m_UIManager.Show(uiName, OnSuccess);
+        }
+
+        public void Show(string uiName, Action<GameObject> OnSuccess = null)
         {
             m_UIManager.Show(uiName, OnSuccess);
         }

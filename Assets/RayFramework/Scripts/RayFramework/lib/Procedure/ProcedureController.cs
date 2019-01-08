@@ -13,12 +13,12 @@ namespace RayFramework.Procedure
         {
             if (m_Terminated)
             {
-                throw new GameFrameworkException("[ProcedureController] has been terminated");
+                throw new RayFrameworkException("[ProcedureController] has been terminated");
             }
 
             if (m_Started)
             {
-                throw new GameFrameworkException("[ProcedureController] has been started");
+                throw new RayFrameworkException("[ProcedureController] has been started");
             }
 
             var state = Activator.CreateInstance<T>();
@@ -31,12 +31,12 @@ namespace RayFramework.Procedure
         {
             if (m_Terminated)
             {
-                throw new GameFrameworkException("[ProcedureController] has been terminated");
+                throw new RayFrameworkException("[ProcedureController] has been terminated");
             }
 
             if (m_Started)
             {
-                throw new GameFrameworkException("[ProcedureController] has been started");
+                throw new RayFrameworkException("[ProcedureController] has been started");
             }
 
             m_Started = true;
@@ -59,12 +59,12 @@ namespace RayFramework.Procedure
         {
             if (m_Terminated)
             {
-                throw new GameFrameworkException("[ProcedureController] has been terminated");
+                throw new RayFrameworkException("[ProcedureController] has been terminated");
             }
 
             if (!m_Started)
             {
-                throw new GameFrameworkException("[ProcedureController] has been started");
+                throw new RayFrameworkException("[ProcedureController] has been started");
             }
             if (CurrentState != null)
             {

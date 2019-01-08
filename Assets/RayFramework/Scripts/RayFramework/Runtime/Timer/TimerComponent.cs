@@ -13,7 +13,7 @@ namespace UnityRayFramework.Runtime
         {
             base.Awake();
 
-            m_TimerManager = GameFrameworkEntry.GetModule<ITimerManager>();
+            m_TimerManager = RayFramework.RayFrameworkEntry.GetModule<ITimerManager>();
             if (m_TimerManager == null)
             {
                 Debug.LogError("Timer manager is invalid");

@@ -23,7 +23,7 @@ namespace UnityRayFramework.Runtime
         {
             base.Awake();
 
-            m_ProcedureManager = GameFrameworkEntry.GetModule<IProcedureManager>();
+            m_ProcedureManager = RayFramework.RayFrameworkEntry.GetModule<IProcedureManager>();
         }
 
         private IEnumerator Start()

@@ -1,5 +1,4 @@
 ﻿using System;
-using RayFramework;
 using RayFramework.UI;
 using RayFramework.Resource;
 using UnityEngine;
@@ -11,24 +10,26 @@ namespace UnityRayFramework.Runtime
         private IResource m_Resource;
 
         public RectTransform InstanceRoot;
+        public string UiResourcePath;
 
         public void Start()
         {
-            m_Resource = GameFrameworkEntry.GetModule<IResource>();
+            m_Resource = RayFramework.RayFrameworkEntry.GetModule<IResource>();
         }
 
 
         public void ResouceLoadUI<T>(string uiName, Action<T> OnSuccess) where T : class
         {
-            m_Resource.LoadAsset<GameObject>(uiName, (asset) =>
-            {
-                var go = Instantiate(asset, InstanceRoot);
-                var ui = go.GetComponent<UIControllerBase>();
-                var rect = go.GetComponent<RectTransform>();
-                ui.name = uiName;
-                ui.LastUseTime = DateTime.Now;
-                OnSuccess?.Invoke(ui as T);
-            });
+            var tempName = uiName;
+            m_Resource.LoadAsset<GameObject>(string.Format(UiResourcePath + "/{0}", uiName), (asset) =>
+               {
+                   var go = Instantiate(asset, InstanceRoot);
+                   var ui = go.GetComponent<UIControllerBase>();
+                   var rect = go.GetComponent<RectTransform>();
+                   ui.name = tempName;
+                   ui.LastUseTime = DateTime.Now;
+                   OnSuccess?.Invoke(ui as T);
+               });
         }
 
         public void ActiveUI(object ui)

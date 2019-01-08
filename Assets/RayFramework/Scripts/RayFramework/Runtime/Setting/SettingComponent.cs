@@ -15,7 +15,7 @@ namespace UnityRayFramework.Runtime
             base.Awake();
 
             var settingHelper = GetComponent<SettingHelperBase>();
-            m_SettingManager = GameFrameworkEntry.GetModule<ISettingManager>();
+            m_SettingManager = RayFramework.RayFrameworkEntry.GetModule<ISettingManager>();
             m_SettingManager.SetSettingHelper(settingHelper);
         }
 
