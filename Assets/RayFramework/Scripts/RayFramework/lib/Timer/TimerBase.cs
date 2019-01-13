@@ -16,7 +16,7 @@ namespace RayFramework.Timer
 
         public static event Action<ITimer> OnCreatEvent;
 
-        public virtual void Creat(ITimer timer)
+        public virtual void Create(ITimer timer)
         {
             OnCreatEvent?.Invoke(timer);
         }

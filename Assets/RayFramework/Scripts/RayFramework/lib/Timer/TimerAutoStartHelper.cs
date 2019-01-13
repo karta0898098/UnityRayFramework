@@ -8,7 +8,7 @@ namespace RayFramework.Timer
         {
             TargerTimer = target;
             OnCompleteTask = OnComplete;
-            Creat(this);
+            Create(this);
         }
 
         public TimerAutoStartHelper(float target, Action OnStart, Action OnComplete)
@@ -16,7 +16,7 @@ namespace RayFramework.Timer
             TargerTimer = target;
             OnStartTask = OnStart;
             OnCompleteTask = OnComplete;
-            Creat(this);
+            Create(this);
         }
 
         public TimerAutoStartHelper(float target, Action OnStart, Action OnProcess, Action OnComplete)
@@ -25,7 +25,7 @@ namespace RayFramework.Timer
             OnStartTask = OnStart;
             OnProcessTask = OnProcess;
             OnCompleteTask = OnComplete;
-            Creat(this);
+            Create(this);
         }
 
         public Action OnStartTask { get; set; }
