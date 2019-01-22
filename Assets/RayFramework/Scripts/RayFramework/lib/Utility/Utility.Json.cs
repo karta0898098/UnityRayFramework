@@ -17,7 +17,7 @@ namespace RayFramework
                     var val = obj.GetType().GetProperty(propName).GetValue(obj, null);
                     if (val != null)
                     {
-                        ret.Add(propName, val.ToString());
+                        ret.Add(propName, val);
                     }
                     else
                     {
