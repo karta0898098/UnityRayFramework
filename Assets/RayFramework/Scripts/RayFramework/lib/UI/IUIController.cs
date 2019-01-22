@@ -11,8 +11,10 @@ namespace RayFramework.UI
 
         bool AllowMulitActive { get; set; }
 
-        IUIController Init();
+        void OnEnter();
 
-        IUIController Dispose(Action OnAnimComplete);
+        void OnUpdate();
+
+        void OnLeave(Action OnAnimComplete);
     }
 }

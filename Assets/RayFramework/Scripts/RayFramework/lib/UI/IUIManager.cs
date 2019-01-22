@@ -14,6 +14,10 @@ namespace RayFramework.UI
 
         void Show<T>(string uiName, Action<T> OnSuccess = null) where T : class;
 
+        void Show(string uiName, Action<object> OnSuccess);
+
+        T GetActiveUI<T>(string uiName) where T : class;
+
         void Close(string uiName);
 
         void ClearCache();

@@ -16,8 +16,10 @@ namespace UnityRayFramework.Runtime
         private bool m_AllowMulitActive;
         public bool AllowMulitActive { get => m_AllowMulitActive; set => m_AllowMulitActive = value; }
 
-        public abstract IUIController Init();
+        public abstract void OnEnter();
 
-        public abstract IUIController Dispose(Action OnAnimComplete);
+        public abstract void OnUpdate();
+
+        public abstract void OnLeave(Action OnAnimComplete);
     }
 }

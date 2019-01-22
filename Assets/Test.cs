@@ -6,10 +6,11 @@ using UnityRayFramework.Runtime;
 public class Test : MonoBehaviour
 {
     AudioComponent Audio;
-
+    UIComponent UI;
     void Start()
     {
         Audio = RayFrameworkEntry.GetComponent<AudioComponent>();
+        UI = RayFrameworkEntry.GetComponent<UIComponent>();
     }
 
 
@@ -17,7 +18,7 @@ public class Test : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Audio.PlaySFX("Aluminum_Can_Open", transform);
+            UI.Show("Canvas");
         }
     }
 }

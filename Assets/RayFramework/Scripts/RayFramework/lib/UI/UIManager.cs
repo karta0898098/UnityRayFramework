@@ -63,7 +63,7 @@ namespace RayFramework.UI
             if (m_Actives.ContainsKey(uiName))
             {
                 var ui = m_Actives[uiName];
-                ui.Dispose(() =>
+                ui.OnLeave(() =>
                 {
                     m_Actives.Remove(uiName);
                     m_ObjectPool.Add(uiName, ui);
@@ -88,6 +88,7 @@ namespace RayFramework.UI
                 m_ObjectPool.Remove(uiName);
                 m_Actives.Add(uiName, ui);
                 m_InstanceHelper.ActiveUI(ui);
+                ui.OnEnter();
                 OnSuccess?.Invoke(ui as T);
             }
             else
@@ -95,10 +96,54 @@ namespace RayFramework.UI
                 m_InstanceHelper.ResouceLoadUI<T>(uiName, (ui) =>
                 {
                     var castUI = ui as IUIController;
+                    castUI.OnEnter();
                     m_Actives.Add(uiName, castUI);
                     OnSuccess?.Invoke(ui as T);
                 });
             }
+        }
+
+        public void Show(string uiName, Action<object> OnSuccess)
+        {
+            if (m_Actives.ContainsKey(uiName))
+            {
+                if (!m_Actives[uiName].AllowMulitActive)
+                {
+                    return;
+                }
+            }
+
+            if (m_ObjectPool.ContainsKey(uiName))
+            {
+                var ui = m_ObjectPool[uiName];
+                m_ObjectPool.Remove(uiName);
+                m_Actives.Add(uiName, ui);
+                m_InstanceHelper.ActiveUI(ui);
+                ui.OnEnter();
+                OnSuccess?.Invoke(ui);
+            }
+            else
+            {
+                m_InstanceHelper.ResouceLoadUI<object>(uiName, (ui) =>
+                {
+                    var castUI = ui as IUIController;
+                    castUI.OnEnter();
+                    m_Actives.Add(uiName, castUI);
+                    OnSuccess?.Invoke(ui);
+                });
+            }
+        }
+
+        public T GetActiveUI<T>(string uiName) where T:class
+        {
+            foreach (var item in m_Actives)
+            {
+                if (item.Key == uiName)
+                {
+                    return item.Value as T;
+                }
+            }
+            return null;
         }
 
         internal override void Shoudown()
@@ -116,6 +161,11 @@ namespace RayFramework.UI
             {
                 m_IntervalTimer = 0;
                 ClearCache();
+            }
+
+            foreach (var item in m_Actives)
+            {
+                item.Value.OnUpdate();
             }
         }
     }

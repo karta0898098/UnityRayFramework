@@ -25,7 +25,6 @@ namespace UnityRayFramework.Runtime
                {
                    var go = Instantiate(asset, InstanceRoot);
                    var ui = go.GetComponent<UIControllerBase>();
-                   var rect = go.GetComponent<RectTransform>();
                    ui.name = tempName;
                    ui.LastUseTime = DateTime.Now;
                    OnSuccess?.Invoke(ui as T);

@@ -31,6 +31,16 @@ namespace UnityRayFramework.Runtime
             m_UIManager.Show(uiName, OnSuccess);
         }
 
+        public void Show(string uiName, Action<object> OnSuccess = null)
+        {
+            m_UIManager.Show(uiName, OnSuccess);
+        }
+
+        public T GetActiveUI<T>(string uiName) where T : UIControllerBase
+        {
+            return m_UIManager.GetActiveUI<T>(uiName);
+        }
+
         public void Close(string uiName)
         {
             m_UIManager.Close(uiName);
