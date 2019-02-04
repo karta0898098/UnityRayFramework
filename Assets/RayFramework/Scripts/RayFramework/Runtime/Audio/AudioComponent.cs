@@ -40,9 +40,14 @@ namespace UnityRayFramework.Runtime
             m_AudioManager.PlaySFX(name);
         }
 
-        public void PlaySFX(string name, Transform target)
+        public void PlaySFX(string name, Transform target, bool setParent = false)
         {
-            m_AudioManager.PlaySFX(name, target);
+            m_AudioManager.PlaySFX(name, target, setParent);
+        }
+
+        public void PlaySFX(string name, Vector3 pos)
+        {
+            m_AudioManager.PlayPosSFX(name, pos);
         }
 
         public void StopBGM(string name)

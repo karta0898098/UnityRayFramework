@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 
 namespace RayFramework.Audio
@@ -70,7 +71,8 @@ namespace RayFramework.Audio
             }
             else
             {
-                m_AudioHelper.ResouceAudio(name, (asset) =>
+                var path = string.Format("{0}/{1}", "BGM", name);
+                m_AudioHelper.ResouceAudio(path, (asset) =>
                 {
                     var audioInfo = new AudioInfo
                     {
@@ -95,7 +97,8 @@ namespace RayFramework.Audio
             }
             else
             {
-                m_AudioHelper.ResouceAudio(name, (asset) =>
+                var path = string.Format("{0}/{1}", "SFX", name);
+                m_AudioHelper.ResouceAudio(path, (asset) =>
                 {
                     var audioInfo = new AudioInfo
                     {
@@ -110,17 +113,18 @@ namespace RayFramework.Audio
             }
         }
 
-        public void PlaySFX(string name, object target)
+        public void PlaySFX(string name, object parent, bool setParent = false)
         {
             if (m_ObjectPool.ContainsKey(name))
             {
                 var audioInfo = m_ObjectPool[name];
                 audioInfo.LastUseTime = DateTime.Now;
-                m_AudioHelper.PlaySFX(audioInfo.audioAsset, target);
+                m_AudioHelper.PlaySFX(audioInfo.audioAsset, parent, setParent);
             }
             else
             {
-                m_AudioHelper.ResouceAudio(name, (asset) =>
+                var path = string.Format("{0}/{1}", "SFX", name);
+                m_AudioHelper.ResouceAudio(path, (asset) =>
                 {
                     var audioInfo = new AudioInfo
                     {
@@ -130,7 +134,33 @@ namespace RayFramework.Audio
                     };
 
                     m_ObjectPool.Add(name, audioInfo);
-                    m_AudioHelper.PlaySFX(asset, target);
+                    m_AudioHelper.PlaySFX(asset, parent, setParent);
+                });
+            }
+        }
+
+        public void PlayPosSFX(string name, object pos)
+        {
+            if (m_ObjectPool.ContainsKey(name))
+            {
+                var audioInfo = m_ObjectPool[name];
+                audioInfo.LastUseTime = DateTime.Now;
+                m_AudioHelper.PlayPosSFX(audioInfo.audioAsset, pos);
+            }
+            else
+            {
+                var path = string.Format("{0}/{1}", "SFX", name);
+                m_AudioHelper.ResouceAudio(path, (asset) =>
+                {
+                    var audioInfo = new AudioInfo
+                    {
+                        LastUseTime = DateTime.Now,
+                        NerverRelease = false,
+                        audioAsset = asset
+                    };
+
+                    m_ObjectPool.Add(name, audioInfo);
+                    m_AudioHelper.PlayPosSFX(asset, pos);
                 });
             }
         }

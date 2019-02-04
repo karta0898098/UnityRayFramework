@@ -10,7 +10,9 @@ namespace RayFramework.Audio
 
         void PlaySFX(object audioAsset);
 
-        void PlaySFX(object audioAsset, object target);
+        void PlaySFX(object audioAsset, object parent, bool setParent = false);
+
+        void PlayPosSFX(object audioAsset, object pos);
 
         void StopBGM(string name);
 

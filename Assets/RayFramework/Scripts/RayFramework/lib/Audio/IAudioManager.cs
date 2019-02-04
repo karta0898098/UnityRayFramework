@@ -13,7 +13,8 @@ namespace RayFramework.Audio
 
         void PlayBGM(string name, bool loop = true);
         void PlaySFX(string name);
-        void PlaySFX(string name, object target);
+        void PlaySFX(string name, object parent, bool setParent = false);
+        void PlayPosSFX(string name, object pos);
         void StopBGM(string name);
 
         void MuteMaster();

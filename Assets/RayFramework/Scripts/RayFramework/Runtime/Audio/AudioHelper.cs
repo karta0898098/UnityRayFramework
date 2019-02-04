@@ -40,7 +40,6 @@ namespace UnityRayFramework.Runtime
         public void ResouceAudio(string name, Action<object> OnComplete)
         {
             var path = string.IsNullOrEmpty(AudioPath) ? name : string.Format("{0}/{1}", AudioPath, name);
-            Debug.Log(path);
             m_Resource.LoadAsset<AudioClip>(path, OnComplete);
         }
 
@@ -71,13 +70,14 @@ namespace UnityRayFramework.Runtime
             }
         }
 
-        public void PlaySFX(object audioAsset, object target)
+        public void PlaySFX(object audioAsset, object target, bool setParent = false)
         {
             if (m_ObjectPool.Count > 0)
             {
                 var tr = target as Transform;
                 var reuse = m_ObjectPool[m_ObjectPool.Count - 1];
-                reuse.transform.SetParent(tr);
+                var parent = setParent ? tr : null;
+                reuse.transform.SetParent(parent);
                 reuse.transform.SetPositionAndRotation(tr.position, tr.rotation);
                 reuse.gameObject.SetActive(true);
                 reuse.Play(audioAsset, Recovery);
@@ -88,8 +88,33 @@ namespace UnityRayFramework.Runtime
                 var tr = target as Transform;
                 var reuse = new GameObject("AudioSFX", typeof(AudioSource));
                 var audioSFX = reuse.AddComponent<AudioSFX>();
-                reuse.transform.SetParent(tr);
+                var parent = setParent ? tr : null;
+                reuse.transform.SetParent(parent);
                 reuse.transform.SetPositionAndRotation(tr.position, tr.rotation);
+                reuse.gameObject.SetActive(true);
+                audioSFX.LastUseTime = DateTime.Now;
+                audioSFX.Play(audioAsset, Recovery);
+            }
+        }
+
+        public void PlayPosSFX(object audioAsset, object pos)
+        {
+            if (m_ObjectPool.Count > 0)
+            {
+                var newPos = (Vector3)pos;
+                var reuse = m_ObjectPool[m_ObjectPool.Count - 1];
+                reuse.transform.SetParent(null);
+                reuse.transform.SetPositionAndRotation(newPos, Quaternion.identity);
+                reuse.gameObject.SetActive(true);
+                reuse.Play(audioAsset, Recovery);
+                reuse.LastUseTime = DateTime.Now;
+            }
+            else
+            {
+                var newPos = (Vector3)pos;
+                var reuse = new GameObject("AudioSFX", typeof(AudioSource));
+                var audioSFX = reuse.AddComponent<AudioSFX>();
+                reuse.transform.SetPositionAndRotation(newPos, Quaternion.identity);
                 reuse.gameObject.SetActive(true);
                 audioSFX.LastUseTime = DateTime.Now;
                 audioSFX.Play(audioAsset, Recovery);
