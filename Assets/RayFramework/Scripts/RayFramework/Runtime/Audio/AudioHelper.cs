@@ -74,9 +74,11 @@ namespace UnityRayFramework.Runtime
         {
             if (m_ObjectPool.Count > 0)
             {
+                var lastIndex = m_ObjectPool.Count - 1;
                 var tr = target as Transform;
-                var reuse = m_ObjectPool[m_ObjectPool.Count - 1];
+                var reuse = m_ObjectPool[lastIndex];
                 var parent = setParent ? tr : null;
+                m_ObjectPool.RemoveAt(lastIndex);
                 reuse.transform.SetParent(parent);
                 reuse.transform.SetPositionAndRotation(tr.position, tr.rotation);
                 reuse.gameObject.SetActive(true);
@@ -101,8 +103,10 @@ namespace UnityRayFramework.Runtime
         {
             if (m_ObjectPool.Count > 0)
             {
+                var lastIndex = m_ObjectPool.Count - 1;
                 var newPos = (Vector3)pos;
-                var reuse = m_ObjectPool[m_ObjectPool.Count - 1];
+                var reuse = m_ObjectPool[lastIndex];
+                m_ObjectPool.RemoveAt(lastIndex);
                 reuse.transform.SetParent(null);
                 reuse.transform.SetPositionAndRotation(newPos, Quaternion.identity);
                 reuse.gameObject.SetActive(true);
