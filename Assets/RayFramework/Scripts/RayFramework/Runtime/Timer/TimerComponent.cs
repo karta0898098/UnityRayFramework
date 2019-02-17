@@ -32,7 +32,7 @@ namespace UnityRayFramework.Runtime
 
         public void ResumeAllTimer()
         {
-            m_TimerManager.PauseAllTimer();
+            m_TimerManager.ResumeAllTimer();
         }
 
     }

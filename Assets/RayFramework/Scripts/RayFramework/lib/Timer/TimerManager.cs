@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RayFramework.Timer
 {
-    internal sealed class TimerManager : RayCoreModule,ITimerManager
+    internal sealed class TimerManager : RayCoreModule, ITimerManager
     {
         private static List<ITimer> m_LiveTimerList = new List<ITimer>();
         private ITimer m_TimerCache;
@@ -27,7 +27,7 @@ namespace RayFramework.Timer
         {
             foreach (var timer in m_LiveTimerList)
             {
-                timer.ResumeTimer();
+                timer.PasueTimer();
             }
         }
 
@@ -43,7 +43,7 @@ namespace RayFramework.Timer
         {
             foreach (var timer in m_LiveTimerList)
             {
-                timer.PasueTimer();
+                timer.ResumeTimer();
             }
         }
 
@@ -71,7 +71,7 @@ namespace RayFramework.Timer
             m_LastRealTime = realTimeTick - m_LastRealTime;
             if (m_LiveTimerList.Count > 0)
             {
-                for (int i=0;i<m_LiveTimerList.Count;i++)
+                for (int i = 0; i < m_LiveTimerList.Count; i++)
                 {
                     m_TimerCache = m_LiveTimerList[i];
                     m_TimerCache.UpdateTimer(m_LastRealTime);
