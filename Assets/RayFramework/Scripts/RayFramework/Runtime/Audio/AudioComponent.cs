@@ -94,5 +94,20 @@ namespace UnityRayFramework.Runtime
         {
             return m_AudioManager.IsPlayingSFX(name);
         }
+
+        public void SetMasterVolume(float value)
+        {
+            m_AudioManager.SetMasterVolume(value);
+        }
+
+        public void SetBGMVolume(float value)
+        {
+            m_AudioManager.SetBGMVolume(value);
+        }
+
+        public void SetSFXVolume(float value)
+        {
+            m_AudioManager.SetSFXVolume(value);
+        }
     }
 }

@@ -334,15 +334,5 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 534669904}
-    - target: {fileID: 9173602163673399254, guid: 7f80b98a52086e84a8da9dff48e66d22,
-        type: 3}
-      propertyPath: m_AvailableProcedureTypeNames.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9173602163673399254, guid: 7f80b98a52086e84a8da9dff48e66d22,
-        type: 3}
-      propertyPath: m_EntranceProcedureTypeName
-      value: 
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f80b98a52086e84a8da9dff48e66d22, type: 3}

@@ -11,6 +11,7 @@ namespace UnityRayFramework.Runtime
     public class AudioHelper : MonoBehaviour, IAudioHelper
     {
         public AudioMixer AudioMixer;
+        public AudioMixerGroup SfxGroup;
 
         private AudioSource[] m_BgmAudioSources;
         private AudioSource[] m_SfxAudioSources;
@@ -88,12 +89,14 @@ namespace UnityRayFramework.Runtime
             else
             {
                 var tr = target as Transform;
-                var reuse = new GameObject("AudioSFX", typeof(AudioSource));
+                var reuse = new GameObject("AudioSFX");
+                var audioSourece = reuse.AddComponent<AudioSource>();
                 var audioSFX = reuse.AddComponent<AudioSFX>();
                 var parent = setParent ? tr : null;
                 reuse.transform.SetParent(parent);
                 reuse.transform.SetPositionAndRotation(tr.position, tr.rotation);
                 reuse.gameObject.SetActive(true);
+                audioSourece.outputAudioMixerGroup = SfxGroup;
                 audioSFX.LastUseTime = DateTime.Now;
                 audioSFX.Play(audioAsset, Recovery);
             }
@@ -116,10 +119,12 @@ namespace UnityRayFramework.Runtime
             else
             {
                 var newPos = (Vector3)pos;
-                var reuse = new GameObject("AudioSFX", typeof(AudioSource));
+                var reuse = new GameObject("AudioSFX");
+                var audioSourece = reuse.AddComponent<AudioSource>();
                 var audioSFX = reuse.AddComponent<AudioSFX>();
                 reuse.transform.SetPositionAndRotation(newPos, Quaternion.identity);
                 reuse.gameObject.SetActive(true);
+                audioSourece.outputAudioMixerGroup = SfxGroup;
                 audioSFX.LastUseTime = DateTime.Now;
                 audioSFX.Play(audioAsset, Recovery);
             }

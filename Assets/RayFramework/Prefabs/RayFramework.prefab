@@ -1398,6 +1398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioMixer: {fileID: 24100000, guid: a471751663b8a42968452645348b153a, type: 2}
+  SfxGroup: {fileID: 243775829556715620, guid: a471751663b8a42968452645348b153a, type: 2}
   ReleaseInterval: 300
   AudioPath: Audio
 --- !u!1 &5899855959601954947
@@ -1488,6 +1489,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ffe3e2bf5334cc7bb798c2bb15eb98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AvailableProcedureTypeNames:
-  - TestProdure
-  m_EntranceProcedureTypeName: TestProdure
+  m_AvailableProcedureTypeNames: []
+  m_EntranceProcedureTypeName: 

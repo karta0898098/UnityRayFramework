@@ -78,6 +78,23 @@ namespace UnityRayFramework.Runtime
         }
         #endregion
 
+        #region Type float Setting
+        public float GetFloat(string settingName)
+        {
+            return m_SettingManager.GetFloat(settingName);
+        }
+
+        public float GetFloat(string settingName, float defaultValue)
+        {
+            return m_SettingManager.GetFloat(settingName, defaultValue);
+        }
+
+        public void SetFloat(string settingName, float value)
+        {
+            m_SettingManager.SetFloat(settingName, value);
+        }
+        #endregion
+
         #region Type String Setting
         public string GetString(string settingName)
         {
