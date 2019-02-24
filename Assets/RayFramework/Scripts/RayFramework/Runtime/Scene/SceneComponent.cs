@@ -1,13 +1,13 @@
 ﻿using System;
 using RayFramework;
-using RayFramework.Resource;
+using UnityEngine.SceneManagement;
 
 namespace UnityRayFramework.Runtime
 {
     public class SceneComponent : RayFrameworkComponent
     {
         ISceneManager m_SceneManager = null;
-        IResource m_Resource = null;
+        ISceneLoaderHelper m_SceneHelper = null;
 
         public event Action OnLoadSuccessEvent;
 
@@ -15,14 +15,23 @@ namespace UnityRayFramework.Runtime
 
         public event Action OnLoadFailEvent;
 
+        public event Action OnUnLoadSuccessEvent;
+
+        public event Action<float> OnUnLoadProgessEvent;
+
+        public event Action OnUnLoadFailEvent;
+
         public void Start()
         {
             m_SceneManager = RayFramework.RayFrameworkEntry.GetModule<ISceneManager>();
-            m_Resource = RayFramework.RayFrameworkEntry.GetModule<IResource>();
-            m_SceneManager.SetResourceManager(m_Resource);
+            m_SceneHelper = GetComponent<ISceneLoaderHelper>();
+            m_SceneManager.SetResourceManager(m_SceneHelper);
             m_SceneManager.OnLoadSuccessEvent += OnLoadSuccessEvent;
             m_SceneManager.OnLoadProgessEvent += OnLoadProgessEvent;
             m_SceneManager.OnLoadFailEvent += OnLoadFailEvent;
+            m_SceneManager.OnUnLoadSuccessEvent += OnUnLoadSuccessEvent;
+            m_SceneManager.OnUnLoadProgessEvent += OnUnLoadProgessEvent;
+            m_SceneManager.OnUnLoadFailEvent += OnUnLoadFailEvent;
         }
 
         public void OnDestroy()
@@ -30,11 +39,19 @@ namespace UnityRayFramework.Runtime
             m_SceneManager.OnLoadSuccessEvent -= OnLoadSuccessEvent;
             m_SceneManager.OnLoadProgessEvent -= OnLoadProgessEvent;
             m_SceneManager.OnLoadFailEvent -= OnLoadFailEvent;
+            m_SceneManager.OnUnLoadSuccessEvent -= OnUnLoadSuccessEvent;
+            m_SceneManager.OnUnLoadProgessEvent -= OnUnLoadProgessEvent;
+            m_SceneManager.OnUnLoadFailEvent -= OnUnLoadFailEvent;
         }
 
         public void LoadScene(string sceneAssetName)
         {
             m_SceneManager.LoadScene(sceneAssetName);
+        }
+
+        public void LoadAddScene(string sceneAssetName)
+        {
+            m_SceneManager.LoadScene(sceneAssetName, LoadSceneMode.Additive);
         }
 
         public void UnLoadScene(string sceneAssetName)

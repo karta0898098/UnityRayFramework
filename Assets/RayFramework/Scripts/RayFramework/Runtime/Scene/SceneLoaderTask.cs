@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using UnityEngine.SceneManagement;
 
 namespace UnityRayFramework.Runtime
 {
@@ -19,7 +18,7 @@ namespace UnityRayFramework.Runtime
 
         public IEnumerator LoadScene(string sceneAssetName)
         {
-            var task = SceneManager.LoadSceneAsync(sceneAssetName);
+            var task = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneAssetName);
 
             if (task == null)
             {
@@ -28,8 +27,26 @@ namespace UnityRayFramework.Runtime
 
             while (!task.isDone)
             {
-                OnProgess?.Invoke(task.progress);
                 yield return null;
+                OnProgess?.Invoke(task.progress);
+            }
+
+            OnSuccess?.Invoke();
+        }
+
+        public IEnumerator LoadScene(string sceneAssetName, UnityEngine.SceneManagement.LoadSceneMode mode)
+        {
+            var task = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneAssetName, mode);
+
+            if (task == null)
+            {
+                OnFailed?.Invoke();
+            }
+
+            while (!task.isDone)
+            {
+                yield return null;
+                OnProgess?.Invoke(task.progress);
             }
 
             OnSuccess?.Invoke();
