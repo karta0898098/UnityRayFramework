@@ -26,22 +26,22 @@ namespace UnityRayFramework.Runtime
             m_SceneManager = RayFramework.RayFrameworkEntry.GetModule<ISceneManager>();
             m_SceneHelper = GetComponent<ISceneLoaderHelper>();
             m_SceneManager.SetResourceManager(m_SceneHelper);
-            m_SceneManager.OnLoadSuccessEvent += OnLoadSuccessEvent;
-            m_SceneManager.OnLoadProgessEvent += OnLoadProgessEvent;
-            m_SceneManager.OnLoadFailEvent += OnLoadFailEvent;
-            m_SceneManager.OnUnLoadSuccessEvent += OnUnLoadSuccessEvent;
-            m_SceneManager.OnUnLoadProgessEvent += OnUnLoadProgessEvent;
-            m_SceneManager.OnUnLoadFailEvent += OnUnLoadFailEvent;
+            m_SceneManager.OnLoadSuccessEvent += NotifyLoadSuccessEvent;
+            m_SceneManager.OnLoadProgessEvent += NotifyLoadProgressEvent;
+            m_SceneManager.OnLoadFailEvent += NotifyLoadFailedEvent;
+            m_SceneManager.OnUnLoadSuccessEvent += NotifyUnLoadSuccessEvent;
+            m_SceneManager.OnUnLoadProgessEvent += NotifyUnLoadProgressEvent;
+            m_SceneManager.OnUnLoadFailEvent += NotifyUnLoadFailedEvent;
         }
 
         public void OnDestroy()
         {
-            m_SceneManager.OnLoadSuccessEvent -= OnLoadSuccessEvent;
-            m_SceneManager.OnLoadProgessEvent -= OnLoadProgessEvent;
-            m_SceneManager.OnLoadFailEvent -= OnLoadFailEvent;
-            m_SceneManager.OnUnLoadSuccessEvent -= OnUnLoadSuccessEvent;
-            m_SceneManager.OnUnLoadProgessEvent -= OnUnLoadProgessEvent;
-            m_SceneManager.OnUnLoadFailEvent -= OnUnLoadFailEvent;
+            m_SceneManager.OnLoadSuccessEvent -= NotifyLoadSuccessEvent;
+            m_SceneManager.OnLoadProgessEvent -= NotifyLoadProgressEvent;
+            m_SceneManager.OnLoadFailEvent -= NotifyLoadFailedEvent;
+            m_SceneManager.OnUnLoadSuccessEvent -= NotifyUnLoadSuccessEvent;
+            m_SceneManager.OnUnLoadProgessEvent -= NotifyUnLoadProgressEvent;
+            m_SceneManager.OnUnLoadFailEvent -= NotifyUnLoadFailedEvent;
         }
 
         public void LoadScene(string sceneAssetName)
@@ -57,6 +57,36 @@ namespace UnityRayFramework.Runtime
         public void UnLoadScene(string sceneAssetName)
         {
             m_SceneManager.UnLoadScene(sceneAssetName);
+        }
+
+        private void NotifyLoadSuccessEvent()
+        {
+            OnLoadSuccessEvent?.Invoke();
+        }
+
+        private void NotifyLoadProgressEvent(float progress)
+        {
+            OnLoadProgessEvent?.Invoke(progress);
+        }
+
+        private void NotifyLoadFailedEvent()
+        {
+            OnLoadFailEvent?.Invoke();
+        }
+
+        private void NotifyUnLoadSuccessEvent()
+        {
+            OnUnLoadSuccessEvent?.Invoke();
+        }
+
+        private void NotifyUnLoadProgressEvent(float progress)
+        {
+            OnUnLoadProgessEvent?.Invoke(progress);
+        }
+
+        private void NotifyUnLoadFailedEvent()
+        {
+            OnUnLoadFailEvent?.Invoke();
         }
     }
 }

@@ -42,8 +42,6 @@ namespace UnityRayFramework.Runtime
 
             Application.runInBackground = m_RunInBackground;
             Screen.sleepTimeout = m_NeverSleep ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
-
-            DontDestroyOnLoad(transform.root);
         }
 
         private void Update()
