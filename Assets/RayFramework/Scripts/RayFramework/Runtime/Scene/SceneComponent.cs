@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using RayFramework;
 using UnityEngine.SceneManagement;
 
@@ -21,11 +22,15 @@ namespace UnityRayFramework.Runtime
 
         public event Action OnUnLoadFailEvent;
 
+        public List<Scene> LoadedScenes = new List<Scene>();
+
         public void Start()
         {
             m_SceneManager = RayFramework.RayFrameworkEntry.GetModule<ISceneManager>();
             m_SceneHelper = GetComponent<ISceneLoaderHelper>();
             m_SceneManager.SetResourceManager(m_SceneHelper);
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+            UnityEngine.SceneManagement.SceneManager.sceneUnloaded += OnSceneUnLoaded;
             m_SceneManager.OnLoadSuccessEvent += NotifyLoadSuccessEvent;
             m_SceneManager.OnLoadProgessEvent += NotifyLoadProgressEvent;
             m_SceneManager.OnLoadFailEvent += NotifyLoadFailedEvent;
@@ -36,12 +41,19 @@ namespace UnityRayFramework.Runtime
 
         public void OnDestroy()
         {
+            UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
+            UnityEngine.SceneManagement.SceneManager.sceneUnloaded -= OnSceneUnLoaded;
             m_SceneManager.OnLoadSuccessEvent -= NotifyLoadSuccessEvent;
             m_SceneManager.OnLoadProgessEvent -= NotifyLoadProgressEvent;
             m_SceneManager.OnLoadFailEvent -= NotifyLoadFailedEvent;
             m_SceneManager.OnUnLoadSuccessEvent -= NotifyUnLoadSuccessEvent;
             m_SceneManager.OnUnLoadProgessEvent -= NotifyUnLoadProgressEvent;
             m_SceneManager.OnUnLoadFailEvent -= NotifyUnLoadFailedEvent;
+        }
+
+        public Scene[] GetActiveLoadedScene()
+        {
+            return LoadedScenes.ToArray();
         }
 
         public void LoadScene(string sceneAssetName)
@@ -87,6 +99,24 @@ namespace UnityRayFramework.Runtime
         private void NotifyUnLoadFailedEvent()
         {
             OnUnLoadFailEvent?.Invoke();
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (!LoadedScenes.Contains(scene))
+            {
+                LoadedScenes.Add(scene);
+                UnityEngine.Debug.LogFormat("Scene:{0} Loaded", scene);
+            }
+        }
+
+        private void OnSceneUnLoaded(Scene scene)
+        {
+            if (LoadedScenes.Contains(scene))
+            {
+                LoadedScenes.Remove(scene);
+                UnityEngine.Debug.LogFormat("Scene:{0} UnLoaded", scene);
+            }
         }
     }
 }
