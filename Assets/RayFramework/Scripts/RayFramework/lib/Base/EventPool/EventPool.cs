@@ -28,7 +28,7 @@ namespace RayFramework
                 while (m_Events.Count > 0)
                 {
                     var e = m_Events.Dequeue();
-
+                    HandleEvent(e.Sender, e.EventArgs);
                 }
             }
         }

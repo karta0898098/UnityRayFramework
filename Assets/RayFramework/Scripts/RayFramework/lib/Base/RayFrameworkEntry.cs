@@ -25,9 +25,9 @@ namespace RayFramework
         /// </summary>
         public static void Shutdown()
         {
-            foreach (var module in m_GameFrameworkModules)
+            for (var current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
             {
-                module.Shoudown();
+                current.Value.Shoudown();
             }
             m_GameFrameworkModules.Clear();
         }
