@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace RayFramework.Audio
 {
-    internal interface IAudioManager
+    public interface IAudioManager
     {
         bool IsMasterMute { get; }
         bool IsBGMMute { get; }

@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 
 namespace RayFramework
@@ -63,9 +64,10 @@ namespace RayFramework
 
                 foreach (var assembly in m_Assemblies)
                 {
-                    type = Type.GetType(string.Format("{0}.{1}", typeName, assembly.FullName));
+                    type = Type.GetType(string.Format("{0}, {1}", typeName, assembly.FullName));
                     if (type != null)
                     {
+                        m_CachedTypes.Add(typeName, type);
                         return type;
                     }
                 }

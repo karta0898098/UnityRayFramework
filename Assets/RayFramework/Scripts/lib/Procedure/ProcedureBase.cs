@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace RayFramework.Procedure
 {
     public abstract class ProcedureBase
