@@ -1,24 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace RayFramework
 {
-    public abstract class ObjectBase
+    public abstract class ObjectPoolBase
     {
         public string Name { get; private set; }
 
-        public object Target { get; private set; }
-
         public DateTime LastUseTime{ get; internal set; }
 
-        protected internal virtual void OnSpawn()
+        protected internal virtual void NewObject(string name, DateTime lastUseTime)
         {
-
-        }
-
-        protected internal virtual void OnUnspawn()
-        {
-
+            Name = name;
+            LastUseTime = lastUseTime;
         }
 
         protected internal abstract void Release(bool isShutdown);
