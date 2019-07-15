@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Reflection;
+using System.Collections.Generic;
 using RayFramework;
 using UnityEditor;
 using UnityRayFramework.Runtime;
@@ -39,11 +40,26 @@ namespace UnityRayFramework.Editor
                     Datas.TryGetValue(item.Key, out var value);
                     var cast = value as IBlackboardItem;
                     var type = cast.GetValueType().Name;
-                    var showValue = cast.GetValueType().IsClass ? "Not Support Class" : cast.GetPubValue().ToString();
-                    EditorGUIUtility.labelWidth = 100;
-                    EditorGUILayout.LabelField(
-                        string.Format("{0}:", item.Key),
-                        string.Format("Type:<{0}>   Value :{1}", type, showValue));
+
+                    if (cast.GetValueType().IsClass && cast.GetValueType() != typeof(char) && cast.GetValueType() != typeof(string))
+                    {
+                        foreach (var i in cast.GetValueType().GetRuntimeProperties())
+                        {
+                            var showValue = string.Format("{0}.{1}\n", i.Name, i.GetValue(cast.GetPubValue()));
+                            EditorGUIUtility.labelWidth = 100;
+                            EditorGUILayout.LabelField(
+                                string.Format("{0}:", item.Key),
+                                string.Format("Type:<{0}>   Value :{1}", type, showValue));
+                        }
+                    }
+                    else
+                    {
+                        var showValue = cast.GetPubValue().ToString();
+                        EditorGUIUtility.labelWidth = 100;
+                        EditorGUILayout.LabelField(
+                            string.Format("{0}:", item.Key),
+                            string.Format("Type:<{0}>   Value :{1}", type, showValue));
+                    }
                 }
             }
         }
